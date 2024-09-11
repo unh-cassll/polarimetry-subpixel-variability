@@ -41,7 +41,10 @@ function synthetic_surface_DoLP_ORI(fignum)
 % sx = gx/dx;
 % sy = gy/dx;
 
-load('example_wave_elevation_and_angles.mat')
+% load('example_wave_elevation_and_angles.mat')
+load('example_wave_angles.mat')
+load('example_wave_elevation.mat')
+load('example_wave_scale_info.mat')
 
 wse_m = wse_m - mean(wse_m,'all');
 
