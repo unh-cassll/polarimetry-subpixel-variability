@@ -1,10 +1,11 @@
 # polarimetry-subpixel-variability
+
 **A project in which we investigate the effects of subpixel variability on the polarimetric slope sensing of ocean waves.**
 
 Manuscript in preparation for *IEEE Transactions on Geoscience and Remote Sensing* (*TGRS*):
 
 "The Effects of Subpixel Variability on Polarimetric Sensing of Ocean Waves"
-Nathan J. M. Laxague, Z. G\"{o}ksu Duvarc\i, Lindsay Hogan, Steven P. Anderson, and Christopher J. Zappa
+Nathan J. M. Laxague, Z. Göksu Duvarci, Lindsay Hogan, Steven P. Anderson, and Christopher J. Zappa
 
 ## Contents
 
@@ -25,5 +26,3 @@ These files live within _data. This folder is meant to be the smallest collectio
 **Graphics**
 
 These images live within _outputs/manuscript_files. The figure_gen script in the root directory handles the printing of these to file, with user-set option to print as vector (.svg) or raster (.png) images.
-
-
