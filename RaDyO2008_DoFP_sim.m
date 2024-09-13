@@ -21,7 +21,7 @@ ustar_lims = [5 40]/100;
 wind_ind = floor(255*((ustar-min(ustar)))/(ustar_lims(2)-min(ustar)))+1;
 cmap_full = viridis(256);
 klims = [3e0 3e3];
-plims = [-1 1]*100;
+plims = [-1 1]*60;
 lw_thick = 3;
 lw_thin = 2;
 

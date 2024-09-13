@@ -17,7 +17,7 @@ blocksize_ticklabels = {'0.1','1','10','100'};
 rmse_ticks = [0.1 1 10 100];
 rmse_ticklabels = {'0.1','1','10','100'};
 
-mss_percent_error_ticks = -40:10:40;
+mss_percent_error_ticks = -60:20:60;
 
 rms_mult = 3.6;
 rms_slope_ticks = log10(logspace(log10(rms_mult*1e-2),log10(rms_mult/2*1e-1),5));
@@ -122,7 +122,7 @@ scatter(blocksize_plot*2*1.3,100*(mss_dofp_plot./mss_avg_plot-1),0.8*msize^2,log
 hold off
 colormap(cmap)
 xlim([0.2 200])
-ylim([-1 1]*40)
+ylim([-1 1]*60)
 clim([rms_slope_ticks(1) rms_slope_ticks(end)])
 box on
 xlabel('blocksize [mm]')
