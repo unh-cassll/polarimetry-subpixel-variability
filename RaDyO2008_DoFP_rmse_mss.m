@@ -86,9 +86,9 @@ ax_struc = struct();
 % block-average
 nexttile(1)
 hold on
-plot([0 60],[0 0],'--','Color',[0.6 0 0],'linewidth',2)
 plot(blocksize_plot*2*1.3,ang_rmse_plot,'o','markerfacecolor','k','markeredgecolor','k','markersize',msize)
 scatter(blocksize_plot*2*1.3,ang_rmse_plot,0.8*msize^2,log10(mss_tail_plot.^0.5),'filled')
+plot([2 50],5*[2 50].^0.33,'k--','linewidth',1.5)
 hold off
 colormap(cmap)
 cbar=colorbar;
@@ -105,6 +105,7 @@ ax_struc(1).ax.XTick = blocksize_ticks;
 ax_struc(1).ax.XTickLabel = blocksize_ticklabels;
 ax_struc(1).ax.YTick = rmse_ticks;
 ax_struc(1).ax.YTickLabel = rmse_ticklabels;
+text(6.5,15,'\propto blocksize^{1/3}','HorizontalAlignment','center','FontSize',16)
 xlabel('blocksize [mm]')
 ylabel('rmse: DoFP vs. mean intensity [\circ]')
 set(get(cbar,'Label'),'String','sub-block rms slope')
