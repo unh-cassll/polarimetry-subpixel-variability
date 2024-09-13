@@ -1,7 +1,12 @@
 
 % Draws 'superpixel' microgrid polarizers
+%
+% N. Laxague 2024
+%
 function draw_superpixel_elements(fignum)
 
+% Create first component of plot: full focal plane array with disparate
+% microgrid polarizers
 tilenum = 1;
 
 titlesize = 20;
@@ -94,7 +99,7 @@ text(x0+X*3/2,y0+Y/2,'I_{0}','FontSize',I_size,'HorizontalAlignment','center')
 text(x0+X*3/2,y0+Y*3/2,'I_{45}','FontSize',I_size,'HorizontalAlignment','center')
 % text(x0+X,y0-Y*0.25,'''Super-pixel''','FontSize',labelsize,'HorizontalAlignment','center')
 
-% Plot sparse arrays
+% Create second component of plot: sparse arrays
 
 num_pixel = num_pixel/2;
 
@@ -209,7 +214,7 @@ end
 plot_horiz_lines(fignum,tilenum,linewidth,0,0,num_pixel,num_pixel,X)
 plot_vert_lines(fignum,tilenum,linewidth,0,0,num_pixel,num_pixel,X)
 
-% Plot interpolated arrays
+% Create third component of plot: interpolated arrays
 
 tilenum = 5;
 nexttile(tilenum)
@@ -308,7 +313,7 @@ plot_vert_lines(fignum,tilenum,linewidth,0,0,num_pixel,num_pixel,X)
 
 tlayout.TileSpacing = 'compact';
 
-%%
+%% This is where we keep the individual plotting functions
 
     function plot_vert_lines(fignum,tilenum,linewidth,x0,y0,X,Y,line_spacing)
 

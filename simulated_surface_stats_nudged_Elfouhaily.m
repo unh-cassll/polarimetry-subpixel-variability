@@ -1,14 +1,17 @@
+% Artificially "nudges" the gravity-capillary peak in Elfouhaily et al.'s
+% wavenumber spectrum to be higher or lower, then uses those modified
+% spectra to create simulated sea surfaces from which we model light
+% reflection and compute our usual error metric of RMSE angle
+%
+% N. Laxague 2024
+%
 function simulated_surface_stats_nudged_Elfouhaily(fignum)
 
 addpath _codes/
 
 load('simulated_surface_comparison_stats_wavenumber_mult_U10_10_scale2048.mat')
 
-text_x = 0.05;
-text_y = 0.96;
-
-alpha_val = 0.7;
-
+% Set up limits and ticks/ticklabels
 RMSE_lims = 2*[1e-1 1e0];
 blocksize_lims = [1e-1 1e2]*2;
 block_ticks = [1 10 100];
@@ -17,16 +20,25 @@ block_ticklabels = {'1','10','100'};
 RMSE_ticks = [(1:9)*0.1 1 2];
 RMSE_ticklabels = {'0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1','2'};
 
+% Prepare wavenumber spectra
 Bk = k.^3.*Fk;
 Bk_copy = Bk;
 Bk_copy(k<50,:) = NaN;
 
+% Preallocate variables of interest
 num_mult = size(Bk,2);
-
 kp = NaN*ones(num_mult,1);
 lp_rmse = [kp kp];
 p_rmse = lp_rmse;
 
+% Some plotting options: label location and curve transparency value
+text_x = 0.05;
+text_y = 0.96;
+alpha_val = 0.7;
+load('coolwarm.mat')
+cmap = interp1(1:size(coolwarm,1), coolwarm, linspace(1,size(coolwarm,1),num_mult), 'linear');
+
+% Loop over the number of "nudges" to grab the RMSE and peak scale
 for m = 1:num_mult
 
     ind = find(Bk(:,m)==max(Bk_copy(:,m),[],'omitnan'),1,'first');
@@ -57,17 +69,14 @@ for m = 1:num_mult
 
 end
 
+% Construct cell array containing the lengthscale of the short wave peak
 lp = 2*pi./kp;
-
 lp_strings = {};
 for m = 1:length(lp)
     lp_strings{m} = ['\lambda_p = ' sprintf('%0.1f',1000*lp(m)) ' mm'];
 end
 
-load('coolwarm.mat')
-
-cmap = interp1(1:size(coolwarm,1), coolwarm, linspace(1,size(coolwarm,1),num_mult), 'linear');
-
+% First plot: wavenumber spectra
 figure(fignum);clf
 hold on
 loglog(k,k.^3.*Fk,'k-','linewidth',4)
@@ -85,8 +94,7 @@ xlabel('k [rad m^{-1}]')
 ylabel('B(k) [rad]')
 text(text_x,text_y,'(a)','FontSize',20,'HorizontalAlignment','center','Units','normalized')
 
-mss = trapz(k,k.^2.*Fk);
-
+% Second plot: RMSE as a function of block size
 figure(fignum*10);clf
 hold on
 for i = 1:length(kp)
@@ -114,9 +122,9 @@ xlim(blocksize_lims)
 pbaspect([1 1 1])
 xlabel('block size [mm]')
 ylabel('RMSE, \theta [\circ]')
-% title('\theta')
 text(text_x,text_y,'(b)','FontSize',20,'HorizontalAlignment','center','Units','normalized')
 
+% Third plot: scatter comparing peak length scales of spectra and RMSE
 figure(fignum*100);clf
 hold on
 for n = 1:length(lp)

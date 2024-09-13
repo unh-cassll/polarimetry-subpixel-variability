@@ -1,41 +1,42 @@
-% plot subpixel spectra comparison
+% Plot observed spectra computed from block-averaged intensity fields
+%
+% Also plot percent difference in spectral energy density as a function of
+% normalized wavenumber over a range of block sizes and wind forcing levels
+%
+% L. Hogan and N. Laxague 2024
+%
 function plot_block_averaged_spectra_comparison(fignum)
 
+% Pluck out our spectra
 load("ASIT_Subpixel_Spect.mat")
 S_all = S_all(:,:,2:end);
 S_all = S_all./(S_all(:,:,1)./S_all(:,1,1));
 k_all = k_all(:,:,2:end);
 B_all = S_all.*k_all;
-
 n_levels = size(S_all,2);
 
-cmap = flipud(spectral(n_levels));
-
-text_x = 0.95;
-text_y = 0.95;
-
-% plot with k*, the normalized reference wavenumber
-
+% Compute k*, the normalized reference wavenumber
 k_all(k_all==0) = NaN;
 kmin = min(k_all,[],3);
 kmax = maxk(k_all,2,3);kmax = kmax(:,:,2);
 kstar = (k_all-kmin)./(kmax-kmin);
-
-kstar_lims = [0 1]+[-0.05 0.05];
-
 kvec = squeeze(k_all(1,1,:));
 
-% plot mean of all runs
-B_mean = squeeze(mean(B_all(:,1:end,:),1));
+% Pluck out run to show as example
 ind = 36;
 B_particular = squeeze(B_all(ind,:,:));
-figure(fignum)
 
+% Prepare colormap, figure label positions, and colorbar ticks/ticklabels
+cmap = flipud(spectral(n_levels));
+text_x = 0.95;
+text_y = 0.95;
+kstar_lims = [0 1]+[-0.05 0.05];
 cbar_ticklabels = {};
 for i = 1:n_levels
     cbar_ticklabels{i} = sprintf('%0.1f',1000*pi./kmax(1,i));
 end
 
+% First plot: wavenumber saturation spectra
 figure(fignum);clf
 hold on
 plot(kvec,B_particular,'k-','linewidth',3)
@@ -50,7 +51,7 @@ xlim([4e0 4e3])
 ylim([2e-5 2e-2])
 pbaspect([1 1 1])
 xlabel('k [rad m^{-1}]')
-ylabel('B(k) [rad^2]')
+ylabel('B(k) [rad]')
 colormap(cmap)
 clim([0 1]+[-1 1]/(n_levels-1)/2)
 cbar = colorbar;
@@ -59,8 +60,7 @@ cbar.Ticks = (0:n_levels-1)/(n_levels-1);
 cbar.TickLabels = cbar_ticklabels;
 set(get(cbar,'label'),'string','Pixel Scale [mm]');
 
-%
-
+% Second plot
 figure(fignum+1)
 tlayout = tiledlayout(2,1);
 
@@ -70,7 +70,8 @@ percentdiff(percentdiff<-99.9) = NaN;
 percentdiff_mean = squeeze(mean(percentdiff,1));
 kstar_mean = squeeze(mean(kstar(:,3:end,:)));
 
-holder(1) = nexttile();
+% Second plot, first panel: percent difference with respect to pixel size
+nexttile(1)
 hold on
 plot([0 1],[0 0],'k--','linewidth',1.5)
 for i = 1:size(percentdiff_mean,1)
@@ -93,8 +94,7 @@ cbar.TickLabels = cbar_ticklabels;
 set(get(cbar,'label'),'string','Pixel Scale [mm]');
 text(text_x,text_y,'(a)','FontSize',16,'HorizontalAlignment','center','Units','normalized')
 
-%
-
+% Second plot, second panel: percent difference with respect to wind forcing
 ustar_lims = 0:0.1:0.5;
 nbins = length(ustar_lims) - 1;
 
@@ -103,7 +103,7 @@ bin_cmap = viridis(nbins);
 ind = 2;
 k_mean = kstar_mean(ind,:);
 
-holder(2) = nexttile();
+nexttile(2)
 hold on
 plot([0 1],[0 0],'k--','linewidth',1.5)
 for i = 1:nbins

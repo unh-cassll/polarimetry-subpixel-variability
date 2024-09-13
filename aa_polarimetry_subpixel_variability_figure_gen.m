@@ -109,6 +109,8 @@ end
 
 %% Flowchart
 
+% Created outside of MATLAB (you have to draw the line at some point)
+
 % fignum = 6;
 
 %% Surface stats: synthetic and ASIT

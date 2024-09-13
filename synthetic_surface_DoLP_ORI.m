@@ -1,6 +1,11 @@
+% Simulates a sea surface, then models light reflection from that surface
+%
+% N. Laxague 2024
 %
 function synthetic_surface_DoLP_ORI(fignum)
 
+%% This first part is the code which produced the simulated data we plot
+%
 % grid_size = 2^13;
 % 
 % % Set up dimensions to loop over: wind speed, frames, blocks
@@ -41,8 +46,10 @@ function synthetic_surface_DoLP_ORI(fignum)
 % sx = gx/dx;
 % sy = gy/dx;
 
-% load('example_wave_elevation_and_angles.mat')
-load('example_wave_angles.mat')
+%% Start of core section of code:
+
+load('example_wave_AOI.mat')
+load('example_wave_ORI.mat')
 load('example_wave_elevation.mat')
 load('example_wave_scale_info.mat')
 
@@ -50,13 +57,12 @@ wse_m = wse_m - mean(wse_m,'all');
 
 % Make plots
 
+% Set up grid, plot limits, and axes ticks
 grid_size = 2000;
 num_ticks = 5;
 tick_increment = floor(grid_size*dx/num_ticks*10)/10;
-
 xlims = [0 max(x)];
 ylims = [0 max(y)];
-% eta_lims = [-1 1]*(ceil(100*2*max(abs(wse_m),[],'all'))-1);
 eta_lims = [-1 1]*4;
 eta_diff = abs(diff(eta_lims));
 if eta_diff == 0
@@ -65,40 +71,19 @@ if eta_diff == 0
 end
 eta_increment = eta_diff/4;
 eta_ticks = eta_lims(1):eta_increment:eta_lims(2);
-
-S_lims = [-1 1]*0.5;
-DoLP_lims = [0 1];
-AOI_lims = [-1 1]*30;
-ORI_lims = [-1 1]*90;
-
-AOI_ticks = -30:15:30;
-
 figticks = 0:tick_increment:num_ticks*tick_increment;
 
-max_array_size = 256;
-subnum = floor(length(x)/max_array_size);
+% Set up color limits and ticks
+AOI_lims = [-1 1]*30;
+ORI_lims = [-1 1]*90;
+AOI_ticks = -30:15:30;
 
+% Create multi-panel figure
 figure(fignum);clf
 tlayout = tiledlayout(1,3);
 
+% Plot water surface elevation
 nexttile()
-% surf(x(1:subnum:end),y(1:subnum:end),100*wse_m(1:subnum:end,1:subnum:end),log10(S0(1:subnum:end,1:subnum:end)));colormap('gray');shading('flat')
-% pbaspect([max(x) max(y) 2*max(abs(wse_m),[],'all')].*[1 1 10])
-% xlim(xlims)
-% ylim(ylims)
-% zlim([-1 1]*100*2*max(abs(wse_m),[],'all'))
-% % title('S_0')
-% % xlabel('x [m]')
-% % ylabel('y [m]')
-% % zlabel('z [cm]')
-% set(gcf,'Position',figpos)%.*[1 1 1.25 1])
-% view([45 30])
-% ax = gca;
-% ax.XTick = figticks;
-% ax.YTick = figticks;
-% ax.XTickLabel = '';
-% ax.YTickLabel = '';
-% ax.ZTickLabel = '';
 imagesc(x,y,100*wse_m);colormap('gray');shading('flat');view([0 -90])
 pbaspect([1 1 1])
 xlim(xlims)
@@ -115,65 +100,13 @@ cbar.Ticks = eta_ticks;
 cbar.Location = 'northoutside';
 set(get(cbar,'Title'),'String','\eta [cm]')
 
-% figure(1);clf
-% imagesc(x,y,sx);colormap('gray');colorbar;view([0 -90])
-% pbaspect([1 1 1])
-% xlim(xlims)
-% ylim(ylims)
-% clim(S_lims)
-% title('S_x')
-% xlabel('x [m]')
-% ylabel('y [m]')
-% set(gcf,'Position',figpos)
-% ax = gca;
-% ax.XTick = figticks;
-% ax.YTick = figticks;
-% grid('off')
-% 
-% figure(2);clf
-% imagesc(x,y,sy);colormap('gray');colorbar;view([0 -90])
-% pbaspect([1 1 1])
-% xlim(xlims)
-% ylim(ylims)
-% clim(S_lims)
-% title('S_y')
-% xlabel('x [m]')
-% ylabel('y [m]')
-% set(gcf,'Position',figpos)
-% ax = gca;
-% ax.XTick = figticks;
-% ax.YTick = figticks;
-% grid('off')
-
-% DoLP = sqrt(S1.^2+S2.^2)./S0;
-% ORI = 0.5*atan2(S2,S1)*180/pi;
-% ORI(ORI<0) = ORI(ORI<0) + 180;
-% ORI = ORI - 90;
-% inds = 4801:6800;
-% [phase_unwrap,~]=Unwrap_TIE_DCT_Iter(ORI(inds,inds)*pi/180*4);
-% ORI = phase_unwrap*180/pi/4;
-% x = x(inds) - 2.4;
-% y = y(inds) - 2.4;
-% DoLP = DoLP(inds,inds);
-% wse_m = wse_m(inds,inds);
-% 
-% s = load('dolp_theta_vecs_low.mat');
-% DOLP_vec = s.DOLP_vec;
-% theta_vec = s.theta_vec;
-% 
-% % Estimate angle of incidence from DoLP
-% DOLP_int = floor(DoLP*10000);
-% DOLP_int(DOLP_int<1) = 1;
-% DOLP_int(DOLP_int>10000) = 10000;
-% AOI = theta_vec(DOLP_int);
-
+% Plot angle of incidence
 nexttile()
 imagesc(x,y,AOI-35);colormap('gray');shading('flat');view([0 -90])
 pbaspect([1 1 1])
 xlim(xlims)
 ylim(ylims)
 clim(AOI_lims)
-% title('DoLP')
 xlabel('x [m]')
 ylabel('y [m]')
 ax_struc(2).ax = gca;
@@ -185,29 +118,27 @@ cbar.Ticks = AOI_ticks;
 cbar.Location = 'northoutside';
 set(get(cbar,'Title'),'String','\theta-\theta_i [\circ]')
 
+% Plot polarization orientation
 nexttile()
 imagesc(x,y,ORI);colormap('gray');colorbar;shading('flat');view([0 -90])
 pbaspect([1 1 1])
 xlim(xlims)
 ylim(ylims)
 clim(ORI_lims)
-% title('orientation angle [\circ]')
 xlabel('x [m]')
 ylabel('y [m]')
 ax_struc(3).ax = gca;
 ax_struc(3).ax.XTick = figticks;
 ax_struc(3).ax.YTick = figticks;
-% ax.YAxisLocation = 'right';
 grid('off')
 cbar = colorbar;
 cbar.Ticks = -90:45:90;
 cbar.Location = 'northoutside';
-% set(get(cbar,'Title'),'String','$\varphi [\circ]$','Interpreter','LaTeX')
 set(get(cbar,'Title'),'String',[char(966) ' [\circ]'])
 
 tile_cleaner(ax_struc,tlayout)
 
-% %%
+%% And this is the function called by the commented code at the top
 % 
 % % Given inputs of
 % % * incident Stokes vector

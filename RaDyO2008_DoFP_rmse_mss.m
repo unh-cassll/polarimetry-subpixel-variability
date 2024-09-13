@@ -3,13 +3,14 @@ function RaDyO2008_DoFP_rmse_mss(fignum)
 
 load('RaDyO2008_reprocess_stats.mat')
 load('DoFP_intensity_avg_RMSE_struc.mat')
-substruc_names = fieldnames(running_struc);
 
+% Define colormap and panel label cell array
 cmap = flipud(spectral(256));
 
 text_x = 0.05;
 text_y = 0.94;
 
+% Define variable ticks/ticklabels
 blocksize_ticks = [0.1 1 10 100];
 blocksize_ticklabels = {'0.1','1','10','100'};
 
@@ -35,12 +36,13 @@ blocksize_vec = [1:1:10 12:2:20 24:4:40];
 
 num_blocks = find(blocksize_vec==20,1,'first');
 
+% Preallocate arrays of interest
 ang_rmse = NaN*ones(length(running_struc),num_blocks);
 mss_avg = ang_rmse;
 mss_dofp = ang_rmse;
 mss_tail = ang_rmse;
 
-
+% Grab mean square slope (total and tail) and RMSE angle
 for n = 1:length(running_struc)
 
     if n ~= 10 && n ~= 13
@@ -67,6 +69,7 @@ for n = 1:length(running_struc)
 
 end
 
+% Prepare arrays for scatterplots
 ang_rmse_plot = reshape(ang_rmse,[],1);
 mss_tail_plot = reshape(mss_tail,[],1);
 mss_dofp_plot = reshape(mss_dofp,[],1);
@@ -79,6 +82,8 @@ tlayout = tiledlayout(2,1);
 
 ax_struc = struct();
 
+% First panel: RMSE angle between DoFP imitation and intensity
+% block-average
 nexttile(1)
 hold on
 plot([0 60],[0 0],'--','Color',[0.6 0 0],'linewidth',2)
@@ -93,7 +98,6 @@ clim([rms_slope_ticks(1) rms_slope_ticks(end)])
 cbar.Ticks = rms_slope_ticks;
 cbar.TickLabels = rms_slope_ticklabels;
 box on
-% pbaspect([3 2 1])
 ax_struc(1).ax = gca;
 ax_struc(1).ax.YScale = 'log';
 ax_struc(1).ax.XScale = 'log';
@@ -107,6 +111,8 @@ set(get(cbar,'Label'),'String','sub-block rms slope')
 cbar.Location = 'northoutside';
 text(text_x,text_y,'(a)','FontSize',20,'Units','normalized','HorizontalAlignment','center')
 
+% Second panel: percent difference in mss between DofP imitation and
+% intensity block-average
 nexttile(2)
 hold on
 plot([0.2 200],[0 0],'k--','linewidth',1.5)
@@ -125,7 +131,6 @@ ax_struc(2).ax.XScale = 'log';
 ax_struc(2).ax.XTick = blocksize_ticks;
 ax_struc(2).ax.XTickLabel = blocksize_ticklabels;
 ax_struc(2).ax.YTick = mss_percent_error_ticks;
-% ax_struc(2).ax.YTickLabel = mss_percent_error_ticklabels;
 text(text_x,text_y,'(b)','FontSize',20,'Units','normalized','HorizontalAlignment','center')
 
 tile_cleaner(ax_struc,tlayout)

@@ -48,11 +48,6 @@ S2_filt = interp1(x,S2_filt,x,'pchip');
 
 DoLP_filt = sqrt(S1_filt.^2+S2_filt.^2)./S0_filt;
 
-sub_num = 30;
-
-refl_color = [0.7 0 0];
-inc_color = 0.25*[1 1 1];
-
 figure(fignum);clf
 tlayout = tiledlayout(2,1);
 % set(gcf,'Position',figpos)
@@ -61,6 +56,10 @@ ax_struc = struct();
 
 nexttile(1)
 hold on
+% REMOVED: traced rays
+% sub_num = 30;
+% refl_color = [0.7 0 0];
+% inc_color = 0.25*[1 1 1];
 % for i = 1:sub_num:length(x)
 %     ray_inc_x = [x_cm(i) x_cm(i)+1000*I(i,1)];
 %     ray_inc_z = [eta_cm(i) eta_cm(i)+-1000*I(i,3)];
@@ -191,7 +190,7 @@ tlayout.TileSpacing = 'none';
             % weight = 0*N(1,:) + 1;
 
             % Ensure that ray is coming from above horizon
-            % NEED TO REPLACE THIS WITH MULTIPLE REFLECTION CALCULATION
+            % TODO: REPLACE THIS WITH MULTIPLE REFLECTION CALCULATION
             pass_cond = ray_inc(3,:) < 0;
             N = N(:,pass_cond);
             ray_inc = ray_inc(:,pass_cond);

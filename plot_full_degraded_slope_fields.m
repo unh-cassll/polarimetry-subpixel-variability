@@ -1,6 +1,12 @@
+% Loads in raw DoAm polarization data and degrades it through
+% * block averaging of intensity or slope
+% * mimicry of DoFP array
+%
+% N. Laxague 2024
 %
 function plot_full_degraded_slope_fields(fignum)
 
+% Load in raw data and set up full-size array
 load('RaDyO_2008_example_polarized_intensities.mat')
 
 dx_cm = 100*m_per_px;
@@ -12,20 +18,25 @@ blocksize = 8;
 
 x_avg = 0:dx_cm*blocksize:dx_cm*N_full;
 
+% Compute along-look slope component, full resolution
 [~,Sy] = compute_slope_field_from_polarization_intensities(I0,I45,I90,I135,dofp_sim_type,1);
 Sy = Sy - mean(Sy,'all','omitnan');
 
 slopefield_holder_struc(1).Sy = Sy;
 
+% Compute along-look slope component, averaged at level of slope
 [Sy_avg_slopefield] = block_average_and_subsample(Sy,blocksize*[1 1]);
 
 slopefield_holder_struc(2).Sy = Sy_avg_slopefield;
 
+% Compute along-look slope component, averaged at level of intensity
 [~,Sy_avg_intensities] = compute_slope_field_from_polarization_intensities(I0,I45,I90,I135,dofp_sim_type,blocksize);
 Sy_avg_intensities = Sy_avg_intensities - mean(Sy_avg_intensities,'all','omitnan');
 
 slopefield_holder_struc(3).Sy = Sy_avg_intensities;
 
+% Compute along-look slope component, imitation of DoFP array & bilinear
+% interpolation
 [~,Sy_DoFP_2x2] = compute_slope_field_from_polarization_intensities(I0,I45,I90,I135,'2x2',blocksize/4);
 Sy_DoFP_2x2 = Sy_DoFP_2x2 - mean(Sy_DoFP_2x2,'all','omitnan');
 
@@ -33,6 +44,8 @@ Sy_DoFP_2x2 = Sy_DoFP_2x2(1:2:end,1:2:end);
 
 slopefield_holder_struc(4).Sy = Sy_DoFP_2x2;
 
+% Compute along-look slope component, imitation of DoFP array & 12-pixel
+% kernel approach of Ratliff et al. (2009)
 [~,Sy_DoFP_4x4] = compute_slope_field_from_polarization_intensities(I0,I45,I90,I135,'4x4',blocksize/4);
 Sy_DoFP_4x4 = Sy_DoFP_4x4 - mean(Sy_DoFP_4x4,'all','omitnan');
 
@@ -54,6 +67,7 @@ label_cell = {'(a)','(b)','(c)','(d)','(e)'};
 position_vec = [1 3 4 7 8];
 span_vec = [2 1 1 1 1];
 
+% Loop to create multi-panel figure
 figure(fignum);clf
 tlayout = tiledlayout(2,4);
 

@@ -1,7 +1,10 @@
 % Example visualization of polarization state-aware ray tracing
+%
 % N. Laxague 2024
+%
 function polarized_ray_tracing(fignum,fsize)
 
+% Define colors
 cmap = spectral(7);
 violet = cmap(7,:);
 teal = cmap(6,:);
@@ -17,6 +20,7 @@ sky_z = 100;
 slope_x = 0.01;
 slope_y = 0.37;
 
+% Call bite-sized polarization-aware ray-tracing function
 [ray_inc,ray_refl,h_inc,s,S_refl,N0,x_face,y_face,z_face] = ray_tracing_helper(sky_dome_azimuth,sky_dome_polar,sky_z,slope_x,slope_y);
 
 % Plot reflection figure

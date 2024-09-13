@@ -1,8 +1,25 @@
+% Reports the root-mean-square difference in 
+% *incidence angle
+% *polarization orientation
+% ... between fields block-averaged at the level of intensity or slope
+%
+% "sim" and "ASIT" refer to the outputs of the numerical simulation and a
+% 2019 field campaign at the Air-Sea Interaction Tower (ASIT), respectively
+% 
+% N. Laxague 2024
 %
 function report_angle_rmse_sim_ASIT(fignum)
 
-cmap = flipud(spectral(256));
+% Load in data used in graphics
+load('simulated_surface_comparison_stats_full_resolution.mat')
+load('ASIT_Pyxis_stats.mat')
+dx = 1.3e-3;
+blocksize_vec = ASIT_Stats.blockscale*dx;
+rms_slope = ASIT_Stats.rms_slope;
+RMSE_ori = ASIT_Stats.RMSE_ori;
+RMSE_aoi = ASIT_Stats.RMSE_aoi;
 
+% Pre-define axis and color limits, ticks, etc.
 blocksize_lims = [1e-1 1e2]*2;
 block_ticks = [1 10 100];
 block_ticklabels = {'1','10','100'};
@@ -17,10 +34,6 @@ for n = 1:length(RMSE_ticks)
     RMSE_ticklabels{n} = sprintf(['%0.' num2str(num_decimal_points) 'f'],RMSE_ticks(n));
 end
 
-mult_val = 2;
-
-slope_lims = log10(mult_val*[1e-3 1e-1]);
-cbar_ticks = log10(mult_val*[1e-3 3.16e-3 1e-2 3.16e-2 1e-1]);
 slope_lims = log10([0.005 0.2]);
 cbar_ticks = log10(logspace(slope_lims(1),slope_lims(end),5));
 cbar_ticklabels = {};
@@ -28,22 +41,15 @@ for n = 1:length(cbar_ticks)
     cbar_ticklabels{n} = sprintf(['%0.' num2str(abs(floor(cbar_ticks(n)))+1) 'f'],10^cbar_ticks(n));
 end
 
-load('simulated_surface_comparison_stats_full_resolution.mat')
-load('ASIT_Pyxis_stats.mat')
+cmap = flipud(spectral(256));
 
-dx = 1.3e-3;
-blocksize_vec = ASIT_Stats.blockscale*dx;
-rms_slope = ASIT_Stats.rms_slope;
-RMSE_ori = ASIT_Stats.RMSE_ori;
-RMSE_aoi = ASIT_Stats.RMSE_aoi;
-
-% block_vec(block_vec*full_resolution_m_px<2.6e-3) = NaN;
-
+% Produce figure
 figure(fignum);clf
 tlayout = tiledlayout(2,2);
 
 ax_struc = struct();
 
+% Modeled, incidence angle
 h(1) = nexttile(1);
 hold on
 plot(1000*block_vec*full_resolution_m_px,squeeze(RMSE_mat(6,:,:)),'o','markerfacecolor','k','markeredgecolor','k','markersize',9)
@@ -70,6 +76,7 @@ xlabel('block size [mm]')
 ylabel('rmse [\circ]')
 text(0.44,7,'modeled','FontSize',16,'HorizontalAlignment','center')
 
+% Modeled, polarization orientation
 h(2) = nexttile(2);
 hold on
 plot(1000*block_vec*full_resolution_m_px,squeeze(RMSE_mat(5,:,:)),'o','markerfacecolor','k','markeredgecolor','k','markersize',9)
@@ -95,6 +102,7 @@ title(char(966))
 xlabel('block size [mm]')
 ylabel('RMSE')
 
+% Slice field observational data along pre-determined quantiles
 numbins = 1;
 quantiles = [10 25 50 75 90];
 
@@ -119,6 +127,7 @@ end
 
 msize = 13;
 
+% Observed, incidence angle
 h(3) = nexttile(3);
 hold on
 plot(1000*blocksize_vec(1,:),RMSE_aoi_binned','s','markerfacecolor','k','markeredgecolor','k','markersize',msize)
@@ -148,6 +157,7 @@ for m = 1:length(quantiles)
     text(1.1,RMSE_aoi_binned(m,1),[sprintf('%0.0f',quantiles(m)) '^{th}'],'FontSize',16)
 end
 
+% Observed, polarization orientation
 h(4) = nexttile(4);
 hold on
 plot(1000*blocksize_vec(1,:),RMSE_ori_binned','s','markerfacecolor','k','markeredgecolor','k','markersize',msize)
