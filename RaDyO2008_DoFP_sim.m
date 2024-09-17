@@ -4,7 +4,7 @@
 %
 % N. Laxague 2024
 % 
-function RaDyO2008_DoFP_sim(fignum)
+function RaDyO2008_DoFP_sim(fignum,labelsize)
 
 % Load in field data
 s = load('RaDyO_2008_omnidirectional_slope_spectra.mat');
@@ -37,7 +37,7 @@ tlayout = tiledlayout(1,3);
 % Lay out panel labels and horizontal reference line
 for m = 1:3
     nexttile(m)
-    text(text_x,text_y,labels{m},'FontSize',22,'HorizontalAlignment','center','Units','normalized')
+    text(text_x,text_y,labels{m},'FontSize',labelsize,'HorizontalAlignment','center','Units','normalized')
     hold on
     if ~mod(m,3)
         plot(klims,0*klims,'k--','linewidth',2)

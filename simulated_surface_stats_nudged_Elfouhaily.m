@@ -5,7 +5,7 @@
 %
 % N. Laxague 2024
 %
-function simulated_surface_stats_nudged_Elfouhaily(fignum)
+function simulated_surface_stats_nudged_Elfouhaily(fignum,labelsize)
 
 addpath _codes/
 
@@ -92,7 +92,7 @@ ylim([5e-5 5e-2])
 pbaspect([1 1 1])
 xlabel('k [rad m^{-1}]')
 ylabel('B(k) [rad]')
-text(text_x,text_y,'(a)','FontSize',20,'HorizontalAlignment','center','Units','normalized')
+text(text_x,text_y,'(a)','FontSize',labelsize,'HorizontalAlignment','center','Units','normalized')
 
 % Second plot: RMSE as a function of block size
 figure(fignum*10);clf
@@ -122,7 +122,7 @@ xlim(blocksize_lims)
 pbaspect([1 1 1])
 xlabel('block size [mm]')
 ylabel('RMSE, \theta [\circ]')
-text(text_x,text_y,'(b)','FontSize',20,'HorizontalAlignment','center','Units','normalized')
+text(text_x,text_y,'(b)','FontSize',labelsize,'HorizontalAlignment','center','Units','normalized')
 
 % Third plot: scatter comparing peak length scales of spectra and RMSE
 figure(fignum*100);clf
@@ -143,4 +143,4 @@ legend(char(966),'\theta','Location','southeast')
 ax=gca;
 ax.XTick = 0:5:50;
 ax.YTick = 0:5:50;
-text(text_x,text_y,'(c)','FontSize',20,'HorizontalAlignment','center','Units','normalized')
+text(text_x,text_y,'(c)','FontSize',labelsize,'HorizontalAlignment','center','Units','normalized')

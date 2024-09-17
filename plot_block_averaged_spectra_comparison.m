@@ -5,7 +5,7 @@
 %
 % L. Hogan and N. Laxague 2024
 %
-function plot_block_averaged_spectra_comparison(fignum)
+function plot_block_averaged_spectra_comparison(fignum,labelsize)
 
 % Pluck out our spectra
 load("ASIT_Subpixel_Spect.mat")
@@ -30,7 +30,7 @@ B_particular = squeeze(B_all(ind,:,:));
 cmap = flipud(spectral(n_levels));
 text_x = 0.95;
 text_y = 0.95;
-kstar_lims = [0 1]+[-0.05 0.05];
+kstar_lims = [0 1];%+[-0.05 0.05];
 cbar_ticklabels = {};
 for i = 1:n_levels
     cbar_ticklabels{i} = sprintf('%0.1f',1000*pi./kmax(1,i));
@@ -92,7 +92,7 @@ cbar.Location = 'eastoutside';
 cbar.Ticks = (0:n_levels-1)/(n_levels-1);
 cbar.TickLabels = cbar_ticklabels;
 set(get(cbar,'label'),'string','Pixel Scale [mm]');
-text(text_x,text_y,'(a)','FontSize',16,'HorizontalAlignment','center','Units','normalized')
+text(text_x,text_y,'(a)','FontSize',labelsize,'HorizontalAlignment','center','Units','normalized')
 
 % Second plot, second panel: percent difference with respect to wind forcing
 ustar_lims = 0:0.1:0.5;
@@ -126,6 +126,6 @@ cbar.Location="eastoutside";
 cbar.Ticks = 0:0.1:0.5;
 clim([0 0.5])
 set(get(cbar,'label'),'string','u_* [m s^{-1}]');
-text(text_x,text_y,'(b)','FontSize',16,'HorizontalAlignment','center','Units','normalized')
+text(text_x,text_y,'(b)','FontSize',labelsize,'HorizontalAlignment','center','Units','normalized')
 
 tile_cleaner(ax_struc,tlayout)

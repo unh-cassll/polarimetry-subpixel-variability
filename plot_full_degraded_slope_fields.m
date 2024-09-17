@@ -4,7 +4,7 @@
 %
 % N. Laxague 2024
 %
-function plot_full_degraded_slope_fields(fignum)
+function plot_full_degraded_slope_fields(fignum,labelsize)
 
 % Load in raw data and set up full-size array
 load('RaDyO_2008_example_polarized_intensities.mat')
@@ -57,8 +57,6 @@ Y_center = X_center*1.02;
 DX = dx_cm*N_full*0.08;
 DY = dx_cm*N_full*0.06;
 
-fsize = 16;
-
 xticks = 0:10:60;
 cticks = -0.5:0.1:0.5;
 
@@ -90,6 +88,7 @@ for n = 1:5
     imagesc(x_plot,x_plot,slopefield_holder_struc(n).Sy);colormap('gray');
     f = fill(X,Y,'w');
     hold off
+    box on
     xlim([0 dx_cm*N_full])
     ylim([0 dx_cm*N_full])
     clim([-1 1]*0.5)
@@ -100,9 +99,9 @@ for n = 1:5
     grid off
     f.FaceAlpha = 0.7;
     if n == 1
-        text(X_center*1.05,Y_center*1.04,label_cell{n},'FontSize',fsize,'HorizontalAlignment','center')
+        text(X_center*1.05,Y_center*1.04,label_cell{n},'FontSize',labelsize,'HorizontalAlignment','center')
     else
-        text(X_center,Y_center,label_cell{n},'FontSize',fsize,'HorizontalAlignment','center')
+        text(X_center,Y_center,label_cell{n},'FontSize',labelsize,'HorizontalAlignment','center')
     end
     
 

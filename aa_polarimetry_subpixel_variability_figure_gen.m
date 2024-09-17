@@ -13,13 +13,13 @@ figure_style
 
 close all;clear;clc
 
-corner_x = 50;
-corner_y = 50;
+corner_x = 1225;
+corner_y = 500;
 
 full_width = 1500;
 full_height = 600;
 
-fsize = 22;
+fsize = 18;
 
 n = 1;
 print_options = {'none','svg','png'};
@@ -36,7 +36,7 @@ out_path = '_outputs/manuscript_figures/';
 %% Example light reflection from gravity-capillary wave
 
 fignum = 1;
-synthetic_slice_DoLP_example(fignum)
+synthetic_slice_DoLP_example(fignum,fsize)
 set(fignum,'Position',figpos.*[1 1 0.5 1])
 
 switch print_option
@@ -66,7 +66,7 @@ end
 
 fignum = 3;
 
-plot_full_degraded_slope_fields(fignum)
+plot_full_degraded_slope_fields(fignum,fsize)
 set(fignum,'Position',figpos.*[1 1 1 1.4])
 
 switch print_option
@@ -132,7 +132,7 @@ end
 
 fignum = 8;
 
-simulated_surface_stats_nudged_Elfouhaily(fignum)
+simulated_surface_stats_nudged_Elfouhaily(fignum,fsize)
 
 set(fignum,'Position',figpos.*[1 1 0.5 1.2])
 set(fignum*10,'Position',figpos.*[1 1 0.5 1.2])
@@ -154,7 +154,7 @@ end
 
 fignum = 9;
 
-plot_block_averaged_spectra_comparison(fignum)
+plot_block_averaged_spectra_comparison(fignum,fsize)
 set(fignum,'Position',figpos.*[1 1 0.5 1.3])
 set(fignum+1,'Position',figpos.*[1 1 0.5 2])
 
@@ -173,7 +173,7 @@ end
 
 fignum = 11;
 
-RaDyO2008_DoFP_sim(fignum)
+RaDyO2008_DoFP_sim(fignum,fsize)
 
 set(fignum,'Position',figpos.*[1 1 1 1])
 
@@ -189,7 +189,7 @@ end
 
 fignum = 12;
 
-RaDyO2008_DoFP_rmse_mss(fignum)
+RaDyO2008_DoFP_rmse_mss(fignum,fsize)
 
 set(fignum,'Position',figpos.*[1 0.1 0.5 2.2])
 

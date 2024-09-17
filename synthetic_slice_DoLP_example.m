@@ -3,7 +3,7 @@
 %
 % N. Laxague 2024
 %
-function synthetic_slice_DoLP_example(fignum)
+function synthetic_slice_DoLP_example(fignum,labelsize)
 
 text_x = 0.04;
 text_y = 0.91;
@@ -12,10 +12,6 @@ in_data = load('MelvilleFedorov2015_length_10cm_steepness_0-375.mat');
 x_cm = in_data.x_cm;
 eta_cm = in_data.eta_cm;
 
-% in_cmap = load('coolwarm.mat');
-% coolwarm = in_cmap.coolwarm;
-
-cmap = cividis(256);
 cmap = pink(256);
 
 x = (1e-4:1e-4:20e-2)' - 0.1;
@@ -78,7 +74,7 @@ pbaspect([10 3 1])
 colormap(cmap)
 xlabel('x [cm]')
 ylabel('\eta [cm]')
-text(text_x,text_y,'(a)','FontSize',18,'Units','normalized','HorizontalAlignment','center')
+text(text_x,text_y,'(a)','FontSize',labelsize,'Units','normalized','HorizontalAlignment','center')
 grid off
 box on
 ax_struc(1).ax = gca;
@@ -106,7 +102,7 @@ pbaspect([10 3 1])
 colormap(cmap)
 xlabel('x [cm]')
 ylabel('\eta [cm]')
-text(text_x,text_y,'(b)','FontSize',18,'Units','normalized','HorizontalAlignment','center')
+text(text_x,text_y,'(b)','FontSize',labelsize,'Units','normalized','HorizontalAlignment','center')
 grid off
 box on
 ax_struc(2).ax = gca;

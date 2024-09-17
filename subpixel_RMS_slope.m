@@ -54,6 +54,7 @@ ax.YScale = 'log';
 ax.YTick = 10.^(-3:1:0);
 ax.YTickLabel = {'0.001','0.01','0.1','1'};
 box on
+ytickangle(90)
 
 % Define colorbar
 colormap(viridis(length(U10)))
@@ -74,5 +75,5 @@ axis_wavelength.FontSize = axis_wavenumber.FontSize;
 axis_wavelength.XMinorTick = "off";
 xlabel(axis_wavenumber,'k_{cut} [rad m^{-1}]')
 xlabel(axis_wavelength,'\lambda_{cut} [mm]')
-ylabel(axis_wavenumber,'subpixel RMS slope')
+ylabel(axis_wavenumber,'subpixel rms slope')
 

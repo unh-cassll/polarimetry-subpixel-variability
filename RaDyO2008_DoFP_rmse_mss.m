@@ -1,5 +1,5 @@
 %
-function RaDyO2008_DoFP_rmse_mss(fignum)
+function RaDyO2008_DoFP_rmse_mss(fignum,labelsize)
 
 load('RaDyO2008_reprocess_stats.mat')
 load('DoFP_intensity_avg_RMSE_struc.mat')
@@ -110,7 +110,7 @@ xlabel('blocksize [mm]')
 ylabel('rmse: DoFP vs. mean intensity [\circ]')
 set(get(cbar,'Label'),'String','sub-block rms slope')
 cbar.Location = 'northoutside';
-text(text_x,text_y,'(a)','FontSize',20,'Units','normalized','HorizontalAlignment','center')
+text(text_x,text_y,'(a)','FontSize',labelsize,'Units','normalized','HorizontalAlignment','center')
 
 % Second panel: percent difference in mss between DofP imitation and
 % intensity block-average
@@ -132,6 +132,6 @@ ax_struc(2).ax.XScale = 'log';
 ax_struc(2).ax.XTick = blocksize_ticks;
 ax_struc(2).ax.XTickLabel = blocksize_ticklabels;
 ax_struc(2).ax.YTick = mss_percent_error_ticks;
-text(text_x,text_y,'(b)','FontSize',20,'Units','normalized','HorizontalAlignment','center')
+text(text_x,text_y,'(b)','FontSize',labelsize,'Units','normalized','HorizontalAlignment','center')
 
 tile_cleaner(ax_struc,tlayout)
