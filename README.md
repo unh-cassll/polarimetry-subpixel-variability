@@ -2,10 +2,10 @@
 
 **A project in which we investigate the effects of subpixel variability on the polarimetric slope sensing of ocean waves.**
 
-Manuscript in preparation for *IEEE Transactions on Geoscience and Remote Sensing* (*TGRS*):
+Manuscript published *IEEE Transactions on Geoscience and Remote Sensing* (*TGRS*):
 
 "The Effects of Subpixel Variability on Polarimetric Sensing of Ocean Waves"
-Nathan J. M. Laxague, Z. Göksu Duvarci, Lindsay Hogan, Steven P. Anderson, and Christopher J. Zappa
+Nathan J. M. Laxague, Z. Göksu Duvarci, Lindsay Hogan, Steven P. Anderson, and Christopher J. Zappa; DOI: [10.1109/TGRS.2025.3538460](https://doi.org/10.1109/TGRS.2025.3538460)
 
 ## Contents
 
